@@ -148,6 +148,107 @@
             font-size: 1.1rem;
         }
 
+        /* Video Player */
+        .video-player {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-player.active {
+            display: flex;
+        }
+
+        .video-container {
+            width: 80%;
+            max-width: 1000px;
+            position: relative;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .close-player {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            background-color: var(--primary);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .player-controls {
+            display: flex;
+            justify-content: space-between;
+            background-color: var(--dark-secondary);
+            padding: 10px;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 18px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        .progress-container {
+            flex-grow: 1;
+            margin: 0 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background-color: var(--gray);
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 5px;
+            width: 0%;
+        }
+
+        .time-display {
+            color: var(--light);
+            font-size: 14px;
+            min-width: 80px;
+            text-align: center;
+        }
+
         /* Episodes */
         .episodes-section {
             margin-top: 3rem;
@@ -196,6 +297,62 @@
             color: var(--gray);
         }
 
+        /* Watch Now Button */
+        .watch-now-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .watch-now-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Video Component */
+        .video-component {
+            margin: 2rem 0;
+        }
+        
+        .video-preview {
+            position: relative;
+            cursor: pointer;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2rem;
+        }
+        
+        .preview-image {
+            width: 100%;
+            display: block;
+        }
+        
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 71, 87, 0.8);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            transition: all 0.3s;
+        }
+        
+        .play-button:hover {
+            background-color: var(--primary);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .anime-header {
@@ -210,6 +367,21 @@
 
             .anime-details {
                 grid-template-columns: 1fr 1fr;
+            }
+
+            .video-container {
+                width: 95%;
+            }
+
+            .close-player {
+                top: -50px;
+                right: -10px;
+            }
+            
+            .play-button {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
             }
         }
     </style>
@@ -265,11 +437,23 @@
                     </div>
                 </div>
                 
-                <a href="#" style="text-decoration: none;">
-                    <button style="background-color: var(--primary); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 5px; font-size: 1rem; cursor: pointer; transition: opacity 0.3s;">
-                        Смотреть сейчас
-                    </button>
-                </a>
+                <button class="watch-now-btn" id="watchNowBtn">
+                    Смотреть сейчас
+                </button>
+            </div>
+        </div>
+
+        <!-- Video Component -->
+        <div class="video-component">
+            <h2 class="section-title">
+                <i class="fas fa-video"></i>
+                Трейлер
+            </h2>
+            <div class="video-preview" id="trailerPreview">
+                <img src="https://via.placeholder.com/800x450" alt="Превью трейлера" class="preview-image">
+                <div class="play-button">
+                    <i class="fas fa-play"></i>
+                </div>
             </div>
         </div>
 
@@ -279,41 +463,202 @@
                 <i class="fas fa-list-ol"></i>
                 Серии
             </h2>
-            <div class="episodes-grid">
-                <div class="episode-card">
+            <div class="episodes-grid" id="episodesGrid">
+                <div class="episode-card" data-episode="1">
                     <div class="episode-number">Серия 1</div>
                     <div class="episode-title">Рёмен Сукуна</div>
                 </div>
-                <div class="episode-card">
+                <div class="episode-card" data-episode="2">
                     <div class="episode-number">Серия 2</div>
                     <div class="episode-title">Для себя</div>
                 </div>
-                <div class="episode-card">
+                <div class="episode-card" data-episode="3">
                     <div class="episode-number">Серия 3</div>
                     <div class="episode-title">Девушка из железа</div>
                 </div>
-                <div class="episode-card">
+                <div class="episode-card" data-episode="4">
                     <div class="episode-number">Серия 4</div>
                     <div class="episode-title">Проклятая утроба</div>
                 </div>
-                <div class="episode-card">
+                <div class="episode-card" data-episode="5">
                     <div class="episode-number">Серия 5</div>
                     <div class="episode-title">Проклятие</div>
                 </div>
-                <div class="episode-card">
+                <div class="episode-card" data-episode="6">
                     <div class="episode-number">Серия 6</div>
                     <div class="episode-title">После дождя</div>
                 </div>
-                <div class="episode-card">
+                <div class="episode-card" data-episode="7">
                     <div class="episode-number">Серия 7</div>
                     <div class="episode-title">Нападение</div>
                 </div>
-                <div class="episode-card">
+                <div class="episode-card" data-episode="8">
                     <div class="episode-number">Серия 8</div>
                     <div class="episode-title">Скучный</div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Video Player -->
+    <div class="video-player" id="videoPlayer">
+        <div class="video-container">
+            <span class="close-player" id="closePlayer">&times;</span>
+            <div class="video-wrapper">
+                <video id="mainVideo" controls>
+                    <!-- Video source will be added dynamically -->
+                    Ваш браузер не поддерживает HTML5 видео.
+                </video>
+            </div>
+            <div class="player-controls">
+                <button class="control-btn" id="playPauseBtn"><i class="fas fa-play"></i></button>
+                <button class="control-btn" id="muteBtn"><i class="fas fa-volume-up"></i></button>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar">
+                        <div class="progress" id="progress"></div>
+                    </div>
+                </div>
+                <span class="time-display" id="timeDisplay">00:00 / 00:00</span>
+                <button class="control-btn" id="fullscreenBtn"><i class="fas fa-expand"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Video elements
+            const videoPlayer = document.getElementById('videoPlayer');
+            const mainVideo = document.getElementById('mainVideo');
+            const closePlayer = document.getElementById('closePlayer');
+            const watchNowBtn = document.getElementById('watchNowBtn');
+            const episodesGrid = document.getElementById('episodesGrid');
+            const trailerPreview = document.getElementById('trailerPreview');
+            
+            // Controls
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const muteBtn = document.getElementById('muteBtn');
+            const progressBar = document.getElementById('progressBar');
+            const progress = document.getElementById('progress');
+            const timeDisplay = document.getElementById('timeDisplay');
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            
+            // Video sources - теперь используем разные видео для каждого эпизода
+            const videoSources = {
+                1: 'video_2025-06-12_17-45-26.mp4',
+                2: 'video_2025-06-12_18-07-08.mp4',
+                3: 'video_2025-06-12_18-26-04.mp4',
+                4: 'video_2025-06-12_18-36-13.mp4',
+                5: 'video_2025-06-12_18-36-20.mp4',
+                6: 'https://sample-videos.com/video123/mp4/720/big_buck_river_720p_1mb.mp4',
+                7: 'https://sample-videos.com/video123/mp4/720/big_buck_ocean_720p_1mb.mp4',
+                8: 'https://sample-videos.com/video123/mp4/720/big_buck_desert_720p_1mb.mp4',
+                trailer: 'https://sample-videos.com/video123/mp4/720/big_buck_trailer_720p_1mb.mp4'
+            };
+            
+            // Play video function - теперь используем правильный sourceKey
+            function playVideo(sourceKey) {
+                if (videoSources[sourceKey]) {
+                    mainVideo.src = videoSources[sourceKey];
+                    videoPlayer.classList.add('active');
+                    mainVideo.play().catch(e => {
+                        console.error("Autoplay failed:", e);
+                        // Показываем кнопку play вручную, если autoplay не сработал
+                        updatePlayPauseIcon();
+                    });
+                    updatePlayPauseIcon();
+                } else {
+                    console.error('Video source not found for key:', sourceKey);
+                    alert('Видео для этого эпизода пока недоступно');
+                }
+            }
+            
+            // Event listeners
+            watchNowBtn.addEventListener('click', () => playVideo(1));
+            
+            episodesGrid.addEventListener('click', (e) => {
+                const episodeCard = e.target.closest('.episode-card');
+                if (episodeCard) {
+                    const episodeNumber = episodeCard.dataset.episode;
+                    playVideo(episodeNumber);
+                }
+            });
+            
+            trailerPreview.addEventListener('click', () => playVideo('trailer'));
+            
+            closePlayer.addEventListener('click', () => {
+                videoPlayer.classList.remove('active');
+                mainVideo.pause();
+            });
+            
+            // Player controls
+            function updatePlayPauseIcon() {
+                playPauseBtn.innerHTML = mainVideo.paused ? '<i class="fas fa-play"></i>' : '<i class="fas fa-pause"></i>';
+            }
+            
+            playPauseBtn.addEventListener('click', () => {
+                if (mainVideo.paused) {
+                    mainVideo.play();
+                } else {
+                    mainVideo.pause();
+                }
+                updatePlayPauseIcon();
+            });
+            
+            muteBtn.addEventListener('click', () => {
+                mainVideo.muted = !mainVideo.muted;
+                muteBtn.innerHTML = mainVideo.muted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+            });
+            
+            fullscreenBtn.addEventListener('click', () => {
+                if (mainVideo.requestFullscreen) {
+                    mainVideo.requestFullscreen();
+                } else if (mainVideo.webkitRequestFullscreen) {
+                    mainVideo.webkitRequestFullscreen();
+                } else if (mainVideo.msRequestFullscreen) {
+                    mainVideo.msRequestFullscreen();
+                }
+            });
+            
+            // Update progress bar
+            mainVideo.addEventListener('timeupdate', () => {
+                const progressPercent = (mainVideo.currentTime / mainVideo.duration) * 100;
+                progress.style.width = `${progressPercent}%`;
+                
+                // Update time display
+                const currentMinutes = Math.floor(mainVideo.currentTime / 60);
+                const currentSeconds = Math.floor(mainVideo.currentTime % 60);
+                const durationMinutes = Math.floor(mainVideo.duration / 60);
+                const durationSeconds = Math.floor(mainVideo.duration % 60);
+                
+                timeDisplay.textContent = 
+                    `${currentMinutes}:${currentSeconds < 10 ? '0' + currentSeconds : currentSeconds} / 
+                     ${durationMinutes}:${durationSeconds < 10 ? '0' + durationSeconds : durationSeconds}`;
+            });
+            
+            // Click on progress bar to seek
+            progressBar.addEventListener('click', (e) => {
+                const pos = (e.pageX - progressBar.getBoundingClientRect().left) / progressBar.offsetWidth;
+                mainVideo.currentTime = pos * mainVideo.duration;
+            });
+            
+            // Update play/pause icon when video is paused/played
+            mainVideo.addEventListener('play', updatePlayPauseIcon);
+            mainVideo.addEventListener('pause', updatePlayPauseIcon);
+            
+            // Close player when pressing Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && videoPlayer.classList.contains('active')) {
+                    videoPlayer.classList.remove('active');
+                    mainVideo.pause();
+                }
+            });
+
+            // Обработка ошибок видео
+            mainVideo.addEventListener('error', function() {
+                console.error('Error loading video:', mainVideo.src);
+                alert('Ошибка загрузки видео. Пожалуйста, попробуйте другой эпизод.');
+            });
+        });
+    </script>
 </body>
 </html>
