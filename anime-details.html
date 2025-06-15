@@ -68,10 +68,38 @@
             color: var(--primary);
         }
 
+        /* Season Selector */
+        .season-selector {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+            gap: 1rem;
+        }
+
+        .season-btn {
+            background-color: var(--dark-secondary);
+            color: var(--light);
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .season-btn.active {
+            background-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .season-btn:hover:not(.active) {
+            background-color: var(--dark);
+        }
+
         /* Anime Details */
         .anime-details-container {
             max-width: 1200px;
-            margin: 2rem auto;
+            margin: 0 auto 2rem;
             padding: 0 2rem;
         }
 
@@ -295,6 +323,12 @@
         .episode-title {
             font-size: 0.9rem;
             color: var(--gray);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
         }
 
         /* Watch Now Button */
@@ -353,6 +387,15 @@
             transform: translate(-50%, -50%) scale(1.1);
         }
 
+        /* Season Content */
+        .season-content {
+            display: none;
+        }
+
+        .season-content.active {
+            display: block;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .anime-header {
@@ -383,6 +426,11 @@
                 height: 50px;
                 font-size: 20px;
             }
+            
+            .episode-title {
+                -webkit-line-clamp: 1;
+                line-clamp: 1;
+            }
         }
     </style>
 </head>
@@ -399,106 +447,387 @@
             <span>ShoxaHub</span>
         </div>
 
-        <div style="width: 40px;"></div> <!-- Spacer for alignment -->
+        <div style="width: 40px;"></div>
     </header>
 
-    <!-- Anime Details -->
-    <div class="anime-details-container">
-        <div class="anime-header">
-            <img src="https://avatars.mds.yandex.net/i?id=b66e6ad09a1610834db634562191bd530746ef1b-4216669-images-thumbs&n=13" alt="Магическая битва" class="anime-poster">
-            <div class="anime-info">
-                <h1 class="anime-title">Магическая битва</h1>
-                <div class="anime-meta">
-                    <span>2020</span>
-                    <span>24 серии</span>
-                    <span class="anime-rating">★ 4.9</span>
-                    <span class="anime-status">Онгоинг</span>
-                </div>
-                <p class="anime-description">
-                    Юдзи Итадори — необычный школьник, который живет с дедом. Однажды его дедушка умирает, оставив Юдзи последние слова: «Всегда помогай людям» и «Умри окруженный людьми». Юдзи решает следовать завещанию деда и присоединяется к оккультному клубу. Однажды члены клуба находят запечатанный талисман, который при вскрытии выпускает проклятие. Юдзи, чтобы спасти своих друзей, проглатывает талисман и становится сосудом для могущественного проклятия — Рёмена Сукуны.
-                </p>
-                
-                <div class="anime-details">
-                    <div class="detail-item">
-                        <div class="detail-label">Тип</div>
-                        <div class="detail-value">TV Сериал</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">Жанры</div>
-                        <div class="detail-value">Сёнэн, Экшен, Фэнтези</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">Студия</div>
-                        <div class="detail-value">MAPPA</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">Длительность</div>
-                        <div class="detail-value">24 мин.</div>
-                    </div>
-                </div>
-                
-                <button class="watch-now-btn" id="watchNowBtn">
-                    Смотреть сейчас
-                </button>
-            </div>
-        </div>
+    <!-- Season Selector -->
+    <div class="season-selector">
+        <button class="season-btn active" data-season="1">Сезон 1</button>
+        <button class="season-btn" data-season="2">Сезон 2</button>
+        <button class="season-btn" data-season="0">Фильм</button>
+    </div>
 
-        <!-- Video Component -->
-        <div class="video-component">
-            <h2 class="section-title">
-                <i class="fas fa-video"></i>
-                Трейлер
-            </h2>
-            <div class="video-preview" id="trailerPreview">
-                <img src=".https://avatars.mds.yandex.net/i?id=dd9e654dff51e81d916f8b0323956629d9c287d1-5009165-images-thumbs&n=13" alt="Превью трейлера" class="preview-image">
-                <div class="play-button">
-                    <i class="fas fa-play"></i>
+    <!-- Season 1 Content -->
+    <div class="season-content active" id="season1">
+        <div class="anime-details-container">
+            <div class="anime-header">
+                <img src="https://avatars.mds.yandex.net/i?id=b66e6ad09a1610834db634562191bd530746ef1b-4216669-images-thumbs&n=13" alt="Магическая битва" class="anime-poster">
+                <div class="anime-info">
+                    <h1 class="anime-title">Магическая битва (Сезон 1)</h1>
+                    <div class="anime-meta">
+                        <span>2020</span>
+                        <span>24 серии</span>
+                        <span class="anime-rating">★ 4.9</span>
+                        <span class="anime-status">Завершен</span>
+                    </div>
+                    <p class="anime-description">
+                        Юдзи Итадори — необычный школьник, который живет с дедом. Однажды его дедушка умирает, оставив Юдзи последние слова: «Всегда помогай людям» и «Умри окруженный людьми». Юдзи решает следовать завещанию деда и присоединяется к оккультному клубу. Однажды члены клуба находят запечатанный талисман, который при вскрытии выпускает проклятие. Юдзи, чтобы спасти своих друзей, проглатывает талисман и становится сосудом для могущественного проклятия — Рёмена Сукуны.
+                    </p>
+                    
+                    <div class="anime-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Тип</div>
+                            <div class="detail-value">TV Сериал</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Жанры</div>
+                            <div class="detail-value">Сёнэн, Экшен, Фэнтези</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Студия</div>
+                            <div class="detail-value">MAPPA</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Длительность</div>
+                            <div class="detail-value">24 мин.</div>
+                        </div>
+                    </div>
+                    
+                    <button class="watch-now-btn" id="watchNowBtn1">
+                        Смотреть сейчас
+                    </button>
                 </div>
             </div>
-        </div>
 
-        <!-- Episodes -->
-        <div class="episodes-section">
-            <h2 class="section-title">
-                <i class="fas fa-list-ol"></i>
-                Серии
-            </h2>
-            <div class="episodes-grid" id="episodesGrid">
-                <div class="episode-card" data-episode="1">
-                    <div class="episode-number">Серия 1</div>
-                    <div class="episode-title">Рёмен Сукуна</div>
+            <!-- Video Component -->
+            <div class="video-component">
+                <h2 class="section-title">
+                    <i class="fas fa-video"></i>
+                    Трейлер
+                </h2>
+                <div class="video-preview" id="trailerPreview1">
+                    <img src="https://avatars.mds.yandex.net/i?id=dd9e654dff51e81d916f8b0323956629d9c287d1-5009165-images-thumbs&n=13" alt="Превью трейлера" class="preview-image">
+                    <div class="play-button">
+                        <i class="fas fa-play"></i>
+                    </div>
                 </div>
-                <div class="episode-card" data-episode="2">
-                    <div class="episode-number">Серия 2</div>
-                    <div class="episode-title">Для себя</div>
-                </div>
-                <div class="episode-card" data-episode="3">
-                    <div class="episode-number">Серия 3</div>
-                    <div class="episode-title">Девушка из железа</div>
-                </div>
-                <div class="episode-card" data-episode="4">
-                    <div class="episode-number">Серия 4</div>
-                    <div class="episode-title">Проклятая утроба</div>
-                </div>
-                <div class="episode-card" data-episode="5">
-                    <div class="episode-number">Серия 5</div>
-                    <div class="episode-title">Проклятие</div>
-                </div>
-                <div class="episode-card" data-episode="6">
-                    <div class="episode-number">Серия 6</div>
-                    <div class="episode-title">После дождя</div>
-                </div>
-                <div class="episode-card" data-episode="7">
-                    <div class="episode-number">Серия 7</div>
-                    <div class="episode-title">Нападение</div>
-                </div>
-                <div class="episode-card" data-episode="8">
-                    <div class="episode-number">Серия 8</div>
-                    <div class="episode-title">Скучный</div>
+            </div>
+
+            <!-- Episodes -->
+            <div class="episodes-section">
+                <h2 class="section-title">
+                    <i class="fas fa-list-ol"></i>
+                    Серии
+                </h2>
+                <div class="episodes-grid" id="episodesGrid1">
+                    <!-- Сезон 1 -->
+                    <div class="episode-card" data-episode="1">
+                        <div class="episode-number">Серия 1</div>
+                        <div class="episode-title">Двуликий призрак</div>
+                    </div>
+                    <div class="episode-card" data-episode="2">
+                        <div class="episode-number">Серия 2</div>
+                        <div class="episode-title">Ради себя</div>
+                    </div>
+                    <div class="episode-card" data-episode="3">
+                        <div class="episode-number">Серия 3</div>
+                        <div class="episode-title">Железная девушка</div>
+                    </div>
+                    <div class="episode-card" data-episode="4">
+                        <div class="episode-number">Серия 4</div>
+                        <div class="episode-title">Устранение сферы с проклятием (часть 1)</div>
+                    </div>
+                    <div class="episode-card" data-episode="5">
+                        <div class="episode-number">Серия 5</div>
+                        <div class="episode-title">Устранение сферы с проклятием (часть 2)</div>
+                    </div>
+                    <div class="episode-card" data-episode="6">
+                        <div class="episode-number">Серия 6</div>
+                        <div class="episode-title">После дождя</div>
+                    </div>
+                    <div class="episode-card" data-episode="7">
+                        <div class="episode-number">Серия 7</div>
+                        <div class="episode-title">Нападение</div>
+                    </div>
+                    <div class="episode-card" data-episode="8">
+                        <div class="episode-number">Серия 8</div>
+                        <div class="episode-title">Скучный</div>
+                    </div>
+                    <div class="episode-card" data-episode="9">
+                        <div class="episode-number">Серия 9</div>
+                        <div class="episode-title">Мелкая сошка и «обратная» месть</div>
+                    </div>
+                    <div class="episode-card" data-episode="10">
+                        <div class="episode-number">Серия 10</div>
+                        <div class="episode-title">Инертная трансформация</div>
+                    </div>
+                    <div class="episode-card" data-episode="11">
+                        <div class="episode-number">Серия 11</div>
+                        <div class="episode-title">Узколобость</div>
+                    </div>
+                    <div class="episode-card" data-episode="12">
+                        <div class="episode-number">Серия 12</div>
+                        <div class="episode-title">Ради прежнего тебя</div>
+                    </div>
+                    <div class="episode-card" data-episode="13">
+                        <div class="episode-number">Серия 13</div>
+                        <div class="episode-title">Увидимся завтра</div>
+                    </div>
+                    <div class="episode-card" data-episode="14">
+                        <div class="episode-number">Серия 14</div>
+                        <div class="episode-title">Программа обмена с киотской школой (часть 0)</div>
+                    </div>
+                    <div class="episode-card" data-episode="15">
+                        <div class="episode-number">Серия 15</div>
+                        <div class="episode-title">Программа обмена с киотской школой (часть 1)</div>
+                    </div>
+                    <div class="episode-card" data-episode="16">
+                        <div class="episode-number">Серия 16</div>
+                        <div class="episode-title">Программа обмена с киотской школой (часть 2)</div>
+                    </div>
+                    <div class="episode-card" data-episode="17">
+                        <div class="episode-number">Серия 17</div>
+                        <div class="episode-title">Программа обмена с киотской школой (часть 3)</div>
+                    </div>
+                    <div class="episode-card" data-episode="18">
+                        <div class="episode-number">Серия 18</div>
+                        <div class="episode-title">Мудрец</div>
+                    </div>
+                    <div class="episode-card" data-episode="19">
+                        <div class="episode-number">Серия 19</div>
+                        <div class="episode-title">Чёрная молния</div>
+                    </div>
+                    <div class="episode-card" data-episode="20">
+                        <div class="episode-number">Серия 20</div>
+                        <div class="episode-title">Нестандартный</div>
+                    </div>
+                    <div class="episode-card" data-episode="21">
+                        <div class="episode-number">Серия 21</div>
+                        <div class="episode-title">Магический "Косиэн"</div>
+                    </div>
+                    <div class="episode-card" data-episode="22">
+                        <div class="episode-number">Серия 22</div>
+                        <div class="episode-title">Истоки слепой покорности (часть 1)</div>
+                    </div>
+                    <div class="episode-card" data-episode="23">
+                        <div class="episode-number">Серия 23</div>
+                        <div class="episode-title">Истоки слепой покорности (часть 2)</div>
+                    </div>
+                    <div class="episode-card" data-episode="24">
+                        <div class="episode-number">Серия 24</div>
+                        <div class="episode-title">Сообщники</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Season 2 Content -->
+    <div class="season-content" id="season2">
+        <div class="anime-details-container">
+            <div class="anime-header">
+                <img src="https://avatars.mds.yandex.net/i?id=a341cd7bfb3296f9d878a5dcc5bdbf7b816f1dbf-5888529-images-thumbs&n=13" alt="Магическая битва 2" class="anime-poster">
+                <div class="anime-info">
+                    <h1 class="anime-title">Магическая битва (Сезон 2)</h1>
+                    <div class="anime-meta">
+                        <span>2023</span>
+                        <span>23 серии</span>
+                        <span class="anime-rating">★ 5.0</span>
+                        <span class="anime-status">Завершен</span>
+                    </div>
+                    <p class="anime-description">
+                        Второй сезон "Магической битвы" фокусируется на арке "Сокрытие" и рассказывает о прошлом Сатору Годзё и Сугуру Гэто. События разворачиваются за 10 лет до начала основной истории, показывая, как молодые Годзё и Гэто стали самыми сильными магами. Вторая часть сезона посвящена арке "Переворот", где проклятия начинают масштабную атаку на мир людей.
+                    </p>
+                    
+                    <div class="anime-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Тип</div>
+                            <div class="detail-value">TV Сериал</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Жанры</div>
+                            <div class="detail-value">Сёнэн, Экшен, Драма</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Студия</div>
+                            <div class="detail-value">MAPPA</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Длительность</div>
+                            <div class="detail-value">24 мин.</div>
+                        </div>
+                    </div>
+                    
+                    <button class="watch-now-btn" id="watchNowBtn2">
+                        Смотреть сейчас
+                    </button>
+                </div>
+            </div>
+
+            <!-- Video Component -->
+            <div class="video-component">
+                <h2 class="section-title">
+                    <i class="fas fa-video"></i>
+                    Трейлер
+                </h2>
+                <div class="video-preview" id="trailerPreview2">
+                    <img src="https://avatars.mds.yandex.net/i?id=d818a3aef9b6838c770eb5476ba1d1a1aa70807c-5896019-images-thumbs&n=13" alt="Превью трейлера" class="preview-image">
+                    <div class="play-button">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Episodes -->
+            <div class="episodes-section">
+                <h2 class="section-title">
+                    <i class="fas fa-list-ol"></i>
+                    Серии
+                </h2>
+                <div class="episodes-grid" id="episodesGrid2">
+                    <!-- Арка "Сокрытие" (1-5 серии) -->
+                    <div class="episode-card" data-episode="1">
+                        <div class="episode-number">Серия 1</div>
+                        <div class="episode-title">Скрытый питомник 1</div>
+                    </div>
+                    <div class="episode-card" data-episode="2">
+                        <div class="episode-number">Серия 2</div>
+                        <div class="episode-title">Скрытый питомник 2</div>
+                    </div>
+                    <div class="episode-card" data-episode="3">
+                        <div class="episode-number">Серия 3</div>
+                        <div class="episode-title">Скрытый питомник 3</div>
+                    </div>
+                    <div class="episode-card" data-episode="4">
+                        <div class="episode-number">Серия 4</div>
+                        <div class="episode-title">Скрытый питомник 4</div>
+                    </div>
+                    <div class="episode-card" data-episode="5">
+                        <div class="episode-number">Серия 5</div>
+                        <div class="episode-title">Скрытый питомник 5</div>
+                    </div>
+                    
+                    <!-- Арка "Переворот" (6-23 серии) -->
+                    <div class="episode-card" data-episode="6">
+                        <div class="episode-number">Серия 6</div>
+                        <div class="episode-title">Гром среди ясного неба</div>
+                    </div>
+                    <div class="episode-card" data-episode="7">
+                        <div class="episode-number">Серия 7</div>
+                        <div class="episode-title">Месть</div>
+                    </div>
+                    <div class="episode-card" data-episode="8">
+                        <div class="episode-number">Серия 8</div>
+                        <div class="episode-title">Искажение</div>
+                    </div>
+                    <div class="episode-card" data-episode="9">
+                        <div class="episode-number">Серия 9</div>
+                        <div class="episode-title">Искажение, часть 2</div>
+                    </div>
+                    <div class="episode-card" data-episode="10">
+                        <div class="episode-number">Серия 10</div>
+                        <div class="episode-title">Пустота</div>
+                    </div>
+                    <div class="episode-card" data-episode="11">
+                        <div class="episode-number">Серия 11</div>
+                        <div class="episode-title">Схватка</div>
+                    </div>
+                    <div class="episode-card" data-episode="12">
+                        <div class="episode-number">Серия 12</div>
+                        <div class="episode-title">День, когда всё изменилось</div>
+                    </div>
+                    <div class="episode-card" data-episode="13">
+                        <div class="episode-number">Серия 13</div>
+                        <div class="episode-title">Гром</div>
+                    </div>
+                    <div class="episode-card" data-episode="14">
+                        <div class="episode-number">Серия 14</div>
+                        <div class="episode-title">Осознание</div>
+                    </div>
+                    <div class="episode-card" data-episode="15">
+                        <div class="episode-number">Серия 15</div>
+                        <div class="episode-title">Восход</div>
+                    </div>
+                    <div class="episode-card" data-episode="16">
+                        <div class="episode-number">Серия 16</div>
+                        <div class="episode-title">Ты особенный</div>
+                    </div>
+                    <div class="episode-card" data-episode="17">
+                        <div class="episode-number">Серия 17</div>
+                        <div class="episode-title">Право на жизнь</div>
+                    </div>
+                    <div class="episode-card" data-episode="18">
+                        <div class="episode-number">Серия 18</div>
+                        <div class="episode-title">Право на жизнь, часть 2</div>
+                    </div>
+                    <div class="episode-card" data-episode="19">
+                        <div class="episode-number">Серия 19</div>
+                        <div class="episode-title">Сильнейший экзорцист</div>
+                    </div>
+                    <div class="episode-card" data-episode="20">
+                        <div class="episode-number">Серия 20</div>
+                        <div class="episode-title">Сильнейший экзорцист, часть 2</div>
+                    </div>
+                    <div class="episode-card" data-episode="21">
+                        <div class="episode-number">Серия 21</div>
+                        <div class="episode-title">Метаморфоза</div>
+                    </div>
+                    <div class="episode-card" data-episode="22">
+                        <div class="episode-number">Серия 22</div>
+                        <div class="episode-title">Метаморфоза, часть 2</div>
+                    </div>
+                    <div class="episode-card" data-episode="23">
+                        <div class="episode-number">Серия 23</div>
+                        <div class="episode-title">Свет</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Movie 0 Content -->
+     <div class="season-content" id="season0">
+        <div class="anime-details-container">
+            <div class="anime-header">
+                <img src="https://avatars.mds.yandex.net/i?id=2ccdefb055a35e72f050001caa0a5c7314e4e775-12539815-images-thumbs&n=13" alt="Магическая битва 0" class="anime-poster">
+                <div class="anime-info">
+                    <h1 class="anime-title">Магическая битва 0</h1>
+                    <div class="anime-meta">
+                        <span>2021</span>
+                        <span>Фильм</span>
+                        <span class="anime-rating">★ 5.0</span>
+                        <span class="anime-status">Завершен</span>
+                    </div>
+                    <p class="anime-description">
+                        Фильм "Магическая битва 0" рассказывает историю Юты Оккоцу, студента магической школы, который становится сосудом для могущественного проклятия - своего погибшего друга Рики. Юта попадает под опеку Сатору Годзё и пытается контролировать силу проклятия, в то время как зловещая организация магов планирует использовать его силу для своих целей.
+                    </p>
+
+                    <div class="anime-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Тип</div>
+                            <div class="detail-value">Фильм</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Жанры</div>
+                            <div class="detail-value">Сёнэн, Экшен, Драма</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Студия</div>
+                            <div class="detail-value">МАРРА</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Длительность</div>
+                            <div class="detail-value">105 мин.</div>
+                        </div>
+                    </div>
+
+                    <button class="watch-now-btn" id="watchNowBtn0">
+                        Смотреть Фильм
+                    </button>
+                </div>
+            </div>
+        </div>
+     </div>
 
     <!-- Video Player -->
     <div class="video-player" id="videoPlayer">
@@ -506,7 +835,6 @@
             <span class="close-player" id="closePlayer">&times;</span>
             <div class="video-wrapper">
                 <video id="mainVideo" controls>
-                    <!-- Video source will be added dynamically -->
                     Ваш браузер не поддерживает HTML5 видео.
                 </video>
             </div>
@@ -530,9 +858,6 @@
             const videoPlayer = document.getElementById('videoPlayer');
             const mainVideo = document.getElementById('mainVideo');
             const closePlayer = document.getElementById('closePlayer');
-            const watchNowBtn = document.getElementById('watchNowBtn');
-            const episodesGrid = document.getElementById('episodesGrid');
-            const trailerPreview = document.getElementById('trailerPreview');
             
             // Controls
             const playPauseBtn = document.getElementById('playPauseBtn');
@@ -542,55 +867,155 @@
             const timeDisplay = document.getElementById('timeDisplay');
             const fullscreenBtn = document.getElementById('fullscreenBtn');
             
-            // Video sources - теперь используем разные видео для каждого эпизода
+            // Season elements
+            const seasonBtns = document.querySelectorAll('.season-btn');
+            const seasonContents = document.querySelectorAll('.season-content');
+            
+            // Video sources for both seasons
             const videoSources = {
-                1: '.video_2025-06-12_17-45-26.mp4',
-                2: '.video_2025-06-12_18-07-08.mp4',
-                3: '.video_2025-06-12_18-26-04.mp4',
-                4: '.video_2025-06-12_18-36-13.mp4',
-                5: '.video_2025-06-12_18-36-20.mp4',
-                6: '.video_2025-06-14_17-29-57.mp4',
-                7: '.video_2025-06-14_17-29-44.mp4',
-                8: '.video_2025-06-14_17-29-38.mp4',
-                trailer: '.video_2025-06-14_17-24-54.mp4'
+                // Season 1
+                '1-1': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/1.1080.812841b2c0546248.mp4?hash1=dd92706af0aded76c83ed15aad977733&hash2=c743d041106e431114df10daff2eacc7',
+                '1-2': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/2.1080.00e82869f54154d8.mp4?hash1=7cb557f42b9887b6b0157e54037a1dee&hash2=45cf6475310b4de97c24beb1a8c3753f',
+                '1-3': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/3.1080.3ab1a0c4b449d8f9.mp4?hash1=c0d639c10c87d86ae345aaf2775e8c6a&hash2=23c17eef07f2628b82444742f65e57a1',
+                '1-4': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/4.1080.5afac34dc6a02441.mp4?hash1=cf29a24de20575cec7a20e023d3d09bc&hash2=ef31f3c6946de7492aeaf22750a90675',
+                '1-5': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/5.1080.77668105d0144c85.mp4?hash1=0977879b2610f53218d846bec52ccda4&hash2=7cb6036879223cb21ef89afd5d03f5af',
+                '1-6': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/6.1080.2ff0fc838dec1fdb.mp4?hash1=6b30bca082e985c7b58263756c662e81&hash2=0a372a6b81d8c24935d8645817fc7069',
+                '1-7': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/7.1080.4bea854e963c8b1f.mp4?hash1=2c1f5f10881b7497815f32258cddd515&hash2=b2c094d0c06d3d6611fd45514328d2d0',
+                '1-8': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/8.1080.0abefed5f16abfd1.mp4?hash1=092c1e122aa4d3594c7f4bc83905e067&hash2=6cdfdb2f199a565475d6077c8f1f3884',
+                '1-9': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/9.1080.37194b300b4e8ed0.mp4?hash1=0bb3fbe3b2bf58c8bb29323552b75b12&hash2=e9789fc9f78942d6e14ab813e49325ed',
+                '1-10': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/10.1080.8bfb6637c3a3f051.mp4?hash1=d934061bb107e6e171a18c2ea0354f3c&hash2=c1f1f112b0c0ecef9b5976ebe738290a',
+                '1-11': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/11.1080.36ed0ca4fe3a9d1a.mp4?hash1=236462a742b230a69edcc4403777b697&hash2=7353e5a8b299cf3b24d3a1264b0f40ea',
+                '1-12': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/12.1080.dc5054caedb7fdb2.mp4?hash1=7adf2158db504791c58b26cdb9878f75&hash2=69bdd5f2df4c33220fe214be4ca0b388',
+                '1-13': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/13.1080.063826a2b9561103.mp4?hash1=60938f7221ae9b0e3807f31737e3b4f6&hash2=2c91f9c22f13d951f1b7fdb293ea1f02',
+                '1-14': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/14.1080.0b623bfabae0b819.mp4?hash1=8cb30606bf06716762a19ea6284b1492&hash2=451e514858ce34ce0e64c6342f47fa5d',
+                '1-15': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/15.1080.2fb1c47fdd60087f.mp4?hash1=febaf745842f7e2584f4f5d87dd21d67&hash2=690f05413d2171b07908f0f21b384799',
+                '1-16': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/16.1080.930dcd5139a2487b.mp4?hash1=730ee443b3c14193de323d88285d654d&hash2=32921f029e182df18ac5961331b4d3ff',
+                '1-17': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/17.1080.679341b7ad77c53d.mp4?hash1=e6d1aec2b3fe1f711d57c5b3136ea30d&hash2=5ea2ff71976e32e7d79eab7fa76148a4',
+                '1-18': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/18.1080.28785045279e89ba.mp4?hash1=6bd6a1d40017b496920e20f260d7671e&hash2=918bb1b5cc31ac3a32c7d30e3fde7a04',
+                '1-19': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/19.1080.1aff3e9c81b13bc6.mp4?hash1=8de0866a5cfeaebfe3dc207dd700ff12&hash2=713cab2f9bc3dbe55a7f87b5673b355d',
+                '1-20': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/20.1080.786d472c5c6a0dd4.mp4?hash1=326acf89c352a4eaa82b09bb08933b76&hash2=26356ae1df2cae516f4b568c301bef21',
+                '1-21': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/21.1080.29e9c4afa26ead99.mp4?hash1=4ba6ff3bcdf1ce4d12edccc4a643cb61&hash2=b1d4f84b18d022d0214f8ee3100872d7',
+                '1-22': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/22.1080.d9e09f173732c071.mp4?hash1=0632f894e656fefda24d76d06fb1f3fb&hash2=ae95189af78c47739c48afb17fe29356',
+                '1-23': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/23.1080.739f1060f648647e.mp4?hash1=21313dc673b621ddfe9301e64c16f463&hash2=b4b74c270107198bfc8960f8a0acc33d',
+                '1-24': 'https://r812131.yandexwebcache.org/jujutsu-kaisen/24.1080.bf203e7ec5830642.mp4?hash1=b5bf4f445c78d4c042982a3ce32db364&hash2=9bc93d7569f23668e2754c78690d5fd0',
+                '1-trailer': 'video_2025-06-14_17-24-54.mp4',
+                
+                // Season 2
+                '2-1': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/1.1080.84abe3cb023f9ef6.mp4?hash1=9f7858b6cdef587e1e53ca1cdd186010&hash2=3a4a42519323302527438c1a8d375402',
+                '2-2': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/2.1080.94e8cb7295ad80b5.mp4?hash1=a2b9761726660b2802bd6a33d68a330d&hash2=7b914e95b9900e68c22eb601cef66a8e',
+                '2-3': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/3.1080.4754a3e7a13503e0.mp4?hash1=fb570d3759ac05db05670a8466ada1c5&hash2=c798ae2fdb92039e09658a7f3a450992',
+                '2-4': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/4.1080.6839ca2d1c349737.mp4?hash1=eccde8590a049a6c0d61664bd041000b&hash2=925e61b1da485c053fa5c72764daaa07',
+                '2-5': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/5.1080.b43ae9bf3bcb8c2c.mp4?hash1=4cee563ab6457a701a768adab61c95eb&hash2=0fecf2dd66327031b2819af0a20558cf',
+                '2-6': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/6.1080.23d6105476663507.mp4?hash1=13858ca18bf00d2bf74e90bbd5249ece&hash2=2900da858de24ed46b86281f9c8b9bcc',
+                '2-7': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/7.1080.9af6168d9620f041.mp4?hash1=0de9534cec6219e8af615b27974450de&hash2=31826fc421e452363cfb204a79562273',
+                '2-8': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/8.1080.a40c9fae1071a082.mp4?hash1=2107041239dd66418537b9d79cd5f6f4&hash2=34398a823ed37fa58ba219cb37109853',
+                '2-9': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/9.1080.6ef42818ee9ee3c0.mp4?hash1=c520857590e90235395bd25c206b575a&hash2=db3161e1f200b96b78dc531d02eb7355',
+                '2-10': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/10.1080.55b1f8757d1c0544.mp4?hash1=e0cc97f2c0feab8d4c8494e441dff408&hash2=d11eb63c8a10846241b13a723f34ff0e',
+                '2-11': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/11.1080.0c7919feb6e17390.mp4?hash1=76d3ae19214775224ba92445c564b862&hash2=e780168a45a7f443e662ac28f859561f',
+                '2-12': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/12.1080.6a098b8a795dbdaa.mp4?hash1=820b2f9c3ebf859506be7254f6833afb&hash2=696c2321656034818265929b60fd36d6',
+                '2-13': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/13.1080.e5a67963e6257bf3.mp4?hash1=2530276a1c89aa6cc2584a48e6af6c95&hash2=d9ca5ade8393f631184f3987f9abb88b',
+                '2-14': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/14.1080.209c22f949bac77f.mp4?hash1=ac596febe3953d0786e02ce48c11990f&hash2=d930b3b771a545d2b8ead4fd7862ce9d',
+                '2-15': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/15.1080.0b54ba6c9e582ad8.mp4?hash1=ffe519bb6e68b9b57f4b4e226f191695&hash2=76a84b13938ea20d607faba67f3e893c',
+                '2-16': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/16.1080.884558d59504f7af.mp4?hash1=ab8f88875d8c1d1aa4e7e004ef0d7a0e&hash2=3bceafebbe9e4e3821538320407c0644',
+                '2-17': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/17.1080.3a0d3ab822a06b92.mp4?hash1=17f99d0ca004577313c8a108d490ad70&hash2=de266701cfbedc053f04deb124d922f4',
+                '2-18': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/18.1080.470958e18690a00d.mp4?hash1=443c844cbf1b08b89d4b0be82c0c20bb&hash2=606c7fbd1a52a5fe6f22084951fe4538',
+                '2-19': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/19.1080.10fc8b9dcd2f2f80.mp4?hash1=9654510bf19f36ee98e7009bfb48a9e6&hash2=3e49b542c53049b0791eba29687daf05',
+                '2-20': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/20.1080.0a2455dc29e7ad4f.mp4?hash1=45055ad0d035d033047243b01ec8558e&hash2=3c66b81f19a9afa47963380717b51661',
+                '2-21': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/21.1080.556ad90ff7c15c44.mp4?hash1=6911b1e7a36f952b96970cffd887633f&hash2=5b46661aebfd1e33c40fa7d13f66a1e5',
+                '2-22': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/22.1080.c844593218f6d4d2.mp4?hash1=9c77d899e7f4f2b89e834601163fd4fb&hash2=007638bc44ee26c256460ad0f9a2927e',
+                '2-23': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/2/23.1080.8d6972d2bfa1dd63.mp4?hash1=9cd1dd4ee34702e9a4102a8ff557f77d&hash2=4fd21bd057b88aeeb5c64adc0917a3d9',
+                '2-trailer': 'video_2025-06-14_17-24-54.mp4',
+
+                // Movie 0
+                '0-movie': 'https://r250108.yandexwebcache.org/jujutsu-kaisen/film/1.1080.ef15e7bdd4b29e0f.mp4?hash1=133b7ec28adb60d6d42e33dd24e62505&hash2=6a93c9b606e5e56daf068a0254e57b35',
             };
             
-            // Play video function - теперь используем правильный sourceKey
-            function playVideo(sourceKey) {
+            // Current season
+            let currentSeason = 1;
+            
+            // Play video function
+            function playVideo(season, episode) {
+                const sourceKey = `${season}-${episode}`;
                 if (videoSources[sourceKey]) {
                     mainVideo.src = videoSources[sourceKey];
                     videoPlayer.classList.add('active');
-                    mainVideo.play().catch(e => {
-                        console.error("Autoplay failed:", e);
-                        // Показываем кнопку play вручную, если autoplay не сработал
-                        updatePlayPauseIcon();
-                    });
-                    updatePlayPauseIcon();
+                    
+                    const playPromise = mainVideo.play();
+                    
+                    if (playPromise !== undefined) {
+                        playPromise.catch(error => {
+                            updatePlayPauseIcon();
+                        });
+                    }
                 } else {
                     console.error('Video source not found for key:', sourceKey);
                     alert('Видео для этого эпизода пока недоступно');
                 }
             }
             
-            // Event listeners
-            watchNowBtn.addEventListener('click', () => playVideo(1));
+            // Switch season
+            function switchSeason(season) {
+                currentSeason = season;
+                
+                // Update buttons
+                seasonBtns.forEach(btn => {
+                    if (parseInt(btn.dataset.season) === season) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                
+                // Update content
+                seasonContents.forEach(content => {
+                    if (parseInt(content.id.replace('season', '')) === season) {
+                        content.classList.add('active');
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+            }
             
-            episodesGrid.addEventListener('click', (e) => {
+            // Event listeners for season buttons
+            seasonBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    switchSeason(parseInt(btn.dataset.season));
+                });
+            });
+            
+            // Event listeners for season 1
+            document.getElementById('watchNowBtn1').addEventListener('click', () => playVideo(1, 1));
+            document.getElementById('trailerPreview1').addEventListener('click', () => playVideo(1, 'trailer'));
+            
+            document.getElementById('episodesGrid1').addEventListener('click', (e) => {
                 const episodeCard = e.target.closest('.episode-card');
                 if (episodeCard) {
                     const episodeNumber = episodeCard.dataset.episode;
-                    playVideo(episodeNumber);
+                    playVideo(1, episodeNumber);
                 }
             });
             
-            trailerPreview.addEventListener('click', () => playVideo('trailer'));
+            // Event listeners for season 2
+            document.getElementById('watchNowBtn2').addEventListener('click', () => playVideo(2, 1));
+            document.getElementById('trailerPreview2').addEventListener('click', () => playVideo(2, 'trailer'));
             
+            document.getElementById('episodesGrid2').addEventListener('click', (e) => {
+                const episodeCard = e.target.closest('.episode-card');
+                if (episodeCard) {
+                    const episodeNumber = episodeCard.dataset.episode;
+                    playVideo(2, episodeNumber);
+                }
+            });
+
+            // Event listeners for movie 0
+            document.getElementById('watchNowBtn0').addEventListener('click',() => playVideo(0, 'movie'));
+            
+            // Player controls
             closePlayer.addEventListener('click', () => {
                 videoPlayer.classList.remove('active');
                 mainVideo.pause();
             });
             
-            // Player controls
             function updatePlayPauseIcon() {
                 playPauseBtn.innerHTML = mainVideo.paused ? '<i class="fas fa-play"></i>' : '<i class="fas fa-pause"></i>';
             }
