@@ -3,494 +3,482 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShoxaHub - Ваш аниме-портал</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
+    <title>AniHub | Каталог</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <style>    
+    :root {
             --primary: #ff4757;
             --dark: #1a1a2e;
-            --dark-secondary: #2a2a3e;
             --light: #f1f2f6;
-            --gray: #a1a1aa;
         }
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Montserrat', sans-serif;
         }
-
+        
         body {
             background-color: var(--dark);
             color: var(--light);
-            min-height: 100vh;
+            padding: 2rem;
         }
-
-        /* Header */
+        
         header {
-            background-color: var(--dark-secondary);
-            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2rem;
         }
-
+        
         .logo {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--primary);
+        }
+        
+        .back-btn {
+            color: var(--light);
+            text-decoration: none;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-
-        .logo i {
-            font-size: 1.5rem;
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
         }
-
-        .search-bar {
-            flex-grow: 1;
-            max-width: 500px;
-            margin: 0 2rem;
-            position: relative;
-        }
-
-        .search-bar input {
-            width: 100%;
-            padding: 0.7rem 1rem;
-            border-radius: 25px;
-            border: none;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: var(--light);
-            font-size: 1rem;
-            padding-left: 3rem;
-        }
-
-        .search-bar i {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gray);
-        }
-
-        .user-actions {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-        }
-
-        .user-actions a {
-            color: var(--light);
-            text-decoration: none;
-            font-size: 1.1rem;
-            transition: color 0.3s;
-        }
-
-        .user-actions a:hover {
-            color: var(--primary);
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        /* Main Content */
-        .container {
-            padding: 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .section-title i {
-            color: var(--primary);
-        }
-
-        /* Anime Grid */
-        .anime-grid {
+        
+        .manga-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 3rem;
         }
-
-        .anime-card {
-            background-color: var(--dark-secondary);
+        
+        .manga-card {
+            background: rgba(255,255,255,0.05);
             border-radius: 10px;
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
-            position: relative;
         }
-
-        .anime-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        
+        .manga-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 15px var(--primary);
         }
-
-        .anime-poster {
+        
+        .manga-card img {
             width: 100%;
-            height: 280px;
+            height: 250px;
             object-fit: cover;
         }
-
-        .anime-info {
+        
+        .manga-info {
             padding: 1rem;
         }
-
-        .anime-title {
-            font-size: 1rem;
+        
+        .manga-info h3 {
             margin-bottom: 0.5rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
-
-        .anime-meta {
-            display: flex;
-            justify-content: space-between;
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        .anime-rating {
+        
+        .rating {
             color: gold;
-            font-weight: 500;
+            font-weight: 700;
         }
 
-        .anime-status {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: var(--primary);
-            color: white;
-            padding: 0.2rem 0.5rem;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
+          /* Адаптация под мобильные устройства */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
 
-        /* Categories */
-        .categories {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            overflow-x: auto;
-            padding-bottom: 0.5rem;
-        }
-
-        .category-btn {
-            background-color: var(--dark-secondary);
-            color: var(--light);
-            border: none;
-            padding: 0.5rem 1.2rem;
-            border-radius: 20px;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: background-color 0.3s;
-        }
-
-        .category-btn.active {
-            background-color: var(--primary);
-            font-weight: 500;
-        }
-
-        .category-btn:hover {
-            background-color: var(--primary);
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--dark-secondary);
-            padding: 2rem;
-            text-align: center;
-            margin-top: 3rem;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .footer-links a {
-            color: var(--light);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: var(--primary);
-        }
-
-        .copyright {
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 1rem;
-            }
-
-            .search-bar {
-                width: 100%;
-                margin: 0.5rem 0;
-            }
-
-            .user-actions {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .anime-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            }
-
-            .anime-poster {
-                height: 220px;
-            }
-        }
+      header {
+        font-size: 1.2rem;
+      }
+    }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
-        <div class="logo">
-            <i class="fas fa-play-circle"></i>
-            <span>AniHub</span>
+        <div class="logo">AniManga</div>
+        <a href="index.html" class="back-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+            </svg>
+            На главную
+        </a>
+        
+    </header>
+    
+    <h1>Каталог манги</h1>
+    
+    <div class="manga-grid" id="cards-container">
+        <!--Anime Card 1-->
+        <a href="anime-details.html" style="text-decoration: none; color: inherit;">
+        <div class="manga-card">
+            <img src="https://avatars.mds.yandex.net/i?id=aa25423bd6685a59532186886721da5423949656-5194348-images-thumbs&n=13" alt="Магичка">
+            <div class="manga-info">
+                <h3>Магическая битва</h3>
+                <h5>2-сезон</h5>
+                <h5>47-серия</h5>
+                <h5>1-филмь</h5>
+                <span class="rating">★ 4.9</span>          
+            </div>     
         </div>
-
-        <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="Поиск аниме...">
-        </div>
-
-        <div class="user-actions">
-            <a href="#"><i class="fas fa-home"></i></a>
-            <a href="#"><i class="fas fa-bookmark"></i></a>
-            <a href="#"><i class="fas fa-history"></i></a>
-            <div class="user-avatar">
-                <i class="fas fa-user"></i>
+        </a>
+       
+        <a href="anime-details2.html" style="text-decoration: none; color: inherit;">
+        <div class="manga-card">
+            <img src="https://avatars.mds.yandex.net/i?id=b46c7aba15d89b1ceadfc0624b362ab6c9bfb183-5233020-images-thumbs&n=13" alt="ванпанчмен">
+            <div class="manga-info">
+                <h3>ванпанчмен</h3>
+                <h5>2-сезон</h5>
+                <h5>24-серия</h5>
+                <span class="rating">★ 4.9</span>       
             </div>
         </div>
-    </header>
+        </a>
 
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Categories -->
-        <div class="categories">
-            <button class="category-btn active">Все</button>
-            <button class="category-btn">Сёнэн</button>
-            <button class="category-btn">Исекай</button>
-            <button class="category-btn">Романтика</button>
-            <button class="category-btn">Фэнтези</button>
-            <button class="category-btn">Комедия</button>
-            <button class="category-btn">Драма</button>
-            <button class="category-btn">Меха</button>
-            <button class="category-btn">Спокон</button>
+        <a href="anime-details3.html" style="text-decoration: none; color: inherit;">
+        <div class="manga-card">
+            <img src="https://avatars.mds.yandex.net/i?id=8020d7e3c0e70b7e271dedf23783fc5a712a55af-5222019-images-thumbs&n=13" alt="ван пис">
+            <div class="manga-info">
+                <h3>ван пис</h3>
+                <h5>1132-серии</h5>
+                <h5>14-фильмов</h5>
+                <span class="rating">★ 4.9</span>       
+            </div>
         </div>
+        </a>
 
-        <!-- Popular Anime -->
-        <h2 class="section-title">
-            <i class="fas fa-fire"></i>
-            Популярное
-        </h2>
-        <div class="anime-grid">
-            <!-- Anime Card 1 -->
-            <a href="anime-details.html" style="text-decoration: none; color: inherit;">
-                <div class="anime-card">
-                    <span class="anime-status">Онгоинг</span>
-                    <img src="https://avatars.mds.yandex.net/i?id=aa25423bd6685a59532186886721da5423949656-5194348-images-thumbs&n=13" alt="Магическая битва" class="anime-poster">
-                    <div class="anime-info">
-                        <h3 class="anime-title">Магическая битва</h3>
-                        <div class="anime-meta">
-                            <span>2 сезона</span>
-                            <span class="anime-rating">★ 4.9</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Anime Card 2 -->
-            <a href="anime-details2.html" style="text-decoration: none; color: inherit;">
-                <div class="anime-card">
-                    <span class="anime-status">Завершён</span>
-                    <img src="https://avatars.mds.yandex.net/i?id=b46c7aba15d89b1ceadfc0624b362ab6c9bfb183-5233020-images-thumbs&n=13" alt="Ванпанчмен" class="anime-poster">
-                    <div class="anime-info">
-                        <h3 class="anime-title">Ванпанчмен</h3>
-                        <div class="anime-meta">
-                            <span>2 сезона</span>
-                            <span class="anime-rating">★ 4.8</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Anime Card 3 -->
-            <a href="anime-details.html" style="text-decoration: none; color: inherit;">
-                <div class="anime-card">
-                    <span class="anime-status">Онгоинг</span>
-                    <img src="https://avatars.mds.yandex.net/i?id=abaa31b46770a0c3a5dfea0e0c666515782443e0-12900328-images-thumbs&n=13" alt="Клинок, рассекающий демонов" class="anime-poster">
-                    <div class="anime-info">
-                        <h3 class="anime-title">Клинок, рассекающий демонов</h3>
-                        <div class="anime-meta">
-                            <span>5 сезонов</span>
-                            <span class="anime-rating">★ 4.9</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Anime Card 4 -->
-            <a href="anime-details.html" style="text-decoration: none; color: inherit;">
-                <div class="anime-card">
-                    <span class="anime-status">Завершён</span>
-                    <img src="https://avatars.mds.yandex.net/i?id=ddb7729a95f51c202eacc72f5a0d67c17ee7781b-9149086-images-thumbs&n=13" alt="Наруто" class="anime-poster">
-                    <div class="anime-info">
-                        <h3 class="anime-title">Наруто</h3>
-                        <div class="anime-meta">
-                            <span>2 сезона</span>
-                            <span class="anime-rating">★ 4.7</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Anime Card 5 -->
-            <a href="anime-details.html" style="text-decoration: none; color: inherit;">
-                <div class="anime-card">
-                    <span class="anime-status">Завершён</span>
-                    <img src="https://avatars.mds.yandex.net/i?id=5a9f26f41d63181abf02e69ae6a752af96bddc74-5692137-images-thumbs&n=13" alt="Атака титанов" class="anime-poster">
-                    <div class="anime-info">
-                        <h3 class="anime-title">Атака титанов</h3>
-                        <div class="anime-meta">
-                            <span>4 сезона</span>
-                            <span class="anime-rating">★ 5.0</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
+        <a href="anime-details4.html" style="text-decoration: none; color: inherit;">
+        <div class="manga-card">
+            <img src="https://avatars.mds.yandex.net/i?id=abaa31b46770a0c3a5dfea0e0c666515782443e0-12900328-images-thumbs&n=13" alt="Клинок расикаюших демонов">
+            <div class="manga-info">
+                <h3>Клинок расикаюших демонов</h3>
+                <h5>5-сезонов</h5>
+                <h5>63-серии</h5>
+                <span class="rating">★ 4.9</span>       
+            </div>
         </div>
+        </a>
 
-        <!-- New Releases -->
-        <h2 class="section-title">
-            <i class="fas fa-star"></i>
-            Новинки
-        </h2>
-        <div class="anime-grid">
-            <!-- Anime Card 6 -->
-            <a href="anime-details.html" style="text-decoration: none; color: inherit;">
-                <div class="anime-card">
-                    <span class="anime-status">Онгоинг</span>
-                    <img src="https://avatars.mds.yandex.net/i?id=df3ac714bed48aa70e46a323cb09080702368e45-8252971-images-thumbs&n=13" alt="Кайдзю номер 8" class="anime-poster">
-                    <div class="anime-info">
-                        <h3 class="anime-title">Кайдзю номер 8</h3>
-                        <div class="anime-meta">
-                            <span>1 сезон</span>
-                            <span class="anime-rating">★ 4.6</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Anime Card 7 -->
-            <a href="anime-details.html" style="text-decoration: none; color: inherit;">
-                <div class="anime-card">
-                    <span class="anime-status">Онгоинг</span>
-                    <img src="https://avatars.mds.yandex.net/i?id=b1f9dad8fdc34da9dfd481e1fed24bb5e6edbf62-8991021-images-thumbs&n=13" alt="Поднятие уровня в одиночку" class="anime-poster">
-                    <div class="anime-info">
-                        <h3 class="anime-title">Поднятие уровня в одиночку</h3>
-                        <div class="anime-meta">
-                            <span>2 сезона</span>
-                            <span class="anime-rating">★ 4.8</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Anime Card 8 -->
-            <a href="anime-details.html" style="text-decoration: none; color: inherit;">
-                <div class="anime-card">
-                    <span class="anime-status">Онгоинг</span>
-                    <img src="https://avatars.mds.yandex.net/i?id=cb7cfb4e9df97e81b72c3dd3ec87c65f67f52f1e-4076180-images-thumbs&n=13" alt="Моя геройская академия" class="anime-poster">
-                    <div class="anime-info">
-                        <h3 class="anime-title">Моя геройская академия</h3>
-                        <div class="anime-meta">
-                            <span>8 сезонов</span>
-                            <span class="anime-rating">★ 4.7</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Anime Card 9 -->
-            <a href="anime-details.html" style="text-decoration: none; color: inherit;">
-                <div class="anime-card">
-                    <span class="anime-status">Завершён</span>
-                    <img src="https://avatars.mds.yandex.net/i?id=4f4553bd30e919f8cc51c0e5bef364c0b8a8f7a4-10346227-images-thumbs&n=13" alt="Хантер х Хантер" class="anime-poster">
-                    <div class="anime-info">
-                        <h3 class="anime-title">Хантер х Хантер</h3>
-                        <div class="anime-meta">
-                            <span>1 сезон</span>
-                            <span class="anime-rating">★ 4.9</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Anime Card 10 -->
-            <a href="anime-details.html" style="text-decoration: none; color: inherit;">
-                <div class="anime-card">
-                    <span class="anime-status">Онгоинг</span>
-                    <img src="https://avatars.mds.yandex.net/i?id=8020d7e3c0e70b7e271dedf23783fc5a712a55af-5222019-images-thumbs&n=13" alt="Ван Пис" class="anime-poster">
-                    <div class="anime-info">
-                        <h3 class="anime-title">Ван Пис</h3>
-                        <div class="anime-meta">
-                            <span>20+ сезонов</span>
-                            <span class="anime-rating">★ 4.9</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
+        <a href="anime-details5.html" style="text-decoration: none; color: inherit;">
+        <div class="manga-card">
+            <img src="https://avatars.mds.yandex.net/i?id=ddb7729a95f51c202eacc72f5a0d67c17ee7781b-9149086-images-thumbs&n=13" alt="Наруто">
+            <div class="manga-info">
+                <h3>Наруто</h3>
+                <h5>2-сезон</h5>
+                <h5>720-серий</h5>
+                <h5>11-фильмов</h5>
+                <h5>35-OVA</h5>
+                <h5>51-чиби</h5>
+                <span class="rating">★ 4.9</span>       
+            </div>
         </div>
+        </a>
+
+        <a href="anime-details6.html" style="text-decoration: none; color: inherit;">
+        <div class="manga-card">
+            <img src="https://avatars.mds.yandex.net/i?id=5a9f26f41d63181abf02e69ae6a752af96bddc74-5692137-images-thumbs&n=13" alt="Охотник на героев">
+            <div class="manga-info">
+                <h3>Атака титанов</h3>
+                <h5>4-сезона</h5>
+                <h5>89-серий</h5>
+                <h5>2-фильма</h5>
+                <span class="rating">★ 4.9</span>       
+            </div>
+        </div>
+        </a>
+
+        <a href="anime-details7.html" style="text-decoration: none; color: inherit;">
+        <div class="manga-card">
+            <img src="https://avatars.mds.yandex.net/i?id=cb7cfb4e9df97e81b72c3dd3ec87c65f67f52f1e-4076180-images-thumbs&n=13" alt="Охотник на героев">
+            <div class="manga-info">
+                <h3>моя геройская академия</h3>
+                <h5>8-сезонов</h5>
+                <h5>169-серий</h5>
+                <h5>4-фильма</h5>
+                <span class="rating">★ 4.9</span>       
+            </div>
+        </div>
+        </a>
+
+        <a href="anime-details8.html" style="text-decoration: none; color: inherit;">
+        <div class="manga-card">
+            <img src="https://avatars.mds.yandex.net/i?id=4f4553bd30e919f8cc51c0e5bef364c0b8a8f7a4-10346227-images-thumbs&n=13">
+            <div class="manga-info">
+                <h3>хантер х хантер</h3>
+                <h5>148-серий</h5>
+                <h5>2-фильма</h5>
+                <span class="rating">★ 4.9</span>       
+            </div>
+        </div>
+        </a>
+
+        <a href="anime-details9.html" style="text-decoration: none; color: inherit;">
+        <div class="manga-card">
+            <img src="https://avatars.mds.yandex.net/i?id=6ef15a69bf5d6bc321011d1a98b8f02f-5268512-images-thumbs&n=13" alt="Гуль">
+            <div class="manga-info">
+                <h3>Токийский Гуль</h3>
+                <h5>3-сезона</h5>
+                <h5>48-серий</h5>
+                <span class="rating">★ 4.9</span>       
+            </div>
+        </div>
+        </a>
+
+        <a href="anime-details10.html" style="text-decoration: none; color: inherit;">
+        <div class="manga-card">
+            <img src="https://avatars.mds.yandex.net/i?id=3a3129d5fd051b449ac9fc798e0d3e1db716d059-10172829-images-thumbs&n=13" alt="штейна">
+            <div class="manga-info">
+                <h3>Врата штейна</h3>
+                <h5>2-сезона</h5>
+                <h5>49-серий</h5>
+                <h5>1-фильм</h5>
+                <span class="rating">★ 4.9</span>       
+            </div>
+        </div>
+        </a>
+
+        <a href="anime-details11.html" style="text-decoration: none; color: inherit;">
+        <div class="manga-card">
+            <img src="https://avatars.mds.yandex.net/i?id=1d3e4f1b69cd4f72cf5cb1ef1860dcdd92c3d25a-4963036-images-thumbs&n=13" alt="кот гиас">
+            <div class="manga-info">
+                <h3>Код гиас</h3>
+                <h5>3-сезона</h5>
+                <h5>62-серии</h5>
+                <h5>6-фильмов</h5>
+                <span class="rating">★ 4.9</span>       
+            </div>
+        </div>
+        </a>
+
+        <a href="anime-details12.html" style="text-decoration: none; color: inherit;">
+        <div class="manga-card">
+            <img src="https://avatars.mds.yandex.net/i?id=7f0c5c7437505da7c95d5036c2373f5e1fa2e73b-5250823-images-thumbs&n=13" alt="зеро">
+            <div class="manga-info">
+                <h3>С нуля пособие по выживание в альтернативном мире</h3>
+                <h5>3-сезона</h5>
+                <h5>66-серий</h5>
+                <h5>2-фильма</h5>
+                <span class="rating">★ 4.9</span>       
+            </div>
+        </div>
+        </a>
+
+        <!--ЭТО ВТРОЙ КАТАЛОГ 2-->
+
+        <a href="anime-detailss1.html/anime-details.html" style="text-decoration: none; color: inherit;">
+            <div class="manga-card">
+                <img src="https://avatars.mds.yandex.net/i?id=e001c1c5199a772823638f48513ac0030943a373-4274925-images-thumbs&n=13" alt="бензопила">
+                <div class="manga-info">
+                    <h3>Человек-бензопила</h3>
+                    <h5>3-сезона</h5>
+                    <h5>66-серий</h5>
+                    <h5>2-фильма</h5>
+                    <span class="rating">★ 4.9</span>       
+                </div>
+            </div>
+            </a>
+
+         <a href="anime-detailss1.html/anime-details.html" style="text-decoration: none; color: inherit;">
+            <div class="manga-card">
+                <img src="https://avatars.mds.yandex.net/i?id=ad958df40c62616761cfb9b6d1d844638c1109b9-5879889-images-thumbs&n=13" alt="бензопила">
+                <div class="manga-info">
+                    <h3>семья шпиона</h3>
+                    <h5>2-сезона</h5>
+                    <h5>66-серий</h5>
+                    <h5>1-фильма</h5>
+                    <span class="rating">★ 4.9</span>       
+                </div>
+            </div>
+            </a>
+
+        <a href="anime-detailss1.html/anime-details.html" style="text-decoration: none; color: inherit;">
+            <div class="manga-card">
+                <img src="https://avatars.mds.yandex.net/i?id=e001c1c5199a772823638f48513ac0030943a373-4274925-images-thumbs&n=13" alt="бензопила">
+                <div class="manga-info">
+                     <h3>Человек-бензопила</h3>
+                     <h5>3-сезона</h5>
+                     <h5>66-серий</h5>
+                     <h5>2-фильма</h5>
+                     <span class="rating">★ 4.9</span>       
+                </div>
+            </div>
+            </a>
+
+        <a href="anime-detailss1.html/anime-details.html" style="text-decoration: none; color: inherit;">
+            <div class="manga-card">
+                <img src="https://avatars.mds.yandex.net/i?id=e001c1c5199a772823638f48513ac0030943a373-4274925-images-thumbs&n=13" alt="бензопила">
+                <div class="manga-info">
+                     <h3>Человек-бензопила</h3>
+                     <h5>3-сезона</h5>
+                     <h5>66-серий</h5>
+                     <h5>2-фильма</h5>
+                     <span class="rating">★ 4.9</span>       
+                </div>
+           </div>
+           </a>
+
+         <a href="anime-detailss1.html/anime-details.html" style="text-decoration: none; color: inherit;">
+            <div class="manga-card">
+                <img src="https://avatars.mds.yandex.net/i?id=e001c1c5199a772823638f48513ac0030943a373-4274925-images-thumbs&n=13" alt="бензопила">
+                <div class="manga-info">
+                     <h3>Человек-бензопила</h3>
+                     <h5>3-сезона</h5>
+                     <h5>66-серий</h5>
+                     <h5>2-фильма</h5>
+                     <span class="rating">★ 4.9</span>       
+                </div>
+           </div>
+           </a>
+
+         <a href="anime-detailss1.html/anime-details.html" style="text-decoration: none; color: inherit;">
+            <div class="manga-card">
+                <img src="https://avatars.mds.yandex.net/i?id=e001c1c5199a772823638f48513ac0030943a373-4274925-images-thumbs&n=13" alt="бензопила">
+                <div class="manga-info">
+                     <h3>Человек-бензопила</h3>
+                     <h5>3-сезона</h5>
+                     <h5>66-серий</h5>
+                     <h5>2-фильма</h5>
+                     <span class="rating">★ 4.9</span>       
+                </div>
+           </div>
+           </a>
+
+        <a href="anime-detailss1.html/anime-details.html" style="text-decoration: none; color: inherit;">
+            <div class="manga-card">
+                <img src="https://avatars.mds.yandex.net/i?id=e001c1c5199a772823638f48513ac0030943a373-4274925-images-thumbs&n=13" alt="бензопила">
+                <div class="manga-info">
+                     <h3>Человек-бензопила</h3>
+                     <h5>3-сезона</h5>
+                     <h5>66-серий</h5>
+                     <h5>2-фильма</h5>
+                     <span class="rating">★ 4.9</span>       
+                </div>
+            </div>
+            </a>
+
+        <a href="anime-detailss1.html/anime-details.html" style="text-decoration: none; color: inherit;">
+            <div class="manga-card">
+                <img src="https://avatars.mds.yandex.net/i?id=e001c1c5199a772823638f48513ac0030943a373-4274925-images-thumbs&n=13" alt="бензопила">
+                 <div class="manga-info">
+                      <h3>Человек-бензопила</h3>
+                      <h5>3-сезона</h5>
+                      <h5>66-серий</h5>
+                      <h5>2-фильма</h5>
+                      <span class="rating">★ 4.9</span>       
+                </div>
+            </div>
+            </a>
+
+        <a href="anime-detailss1.html/anime-details.html" style="text-decoration: none; color: inherit;">
+            <div class="manga-card">
+                <img src="https://avatars.mds.yandex.net/i?id=e001c1c5199a772823638f48513ac0030943a373-4274925-images-thumbs&n=13" alt="бензопила">
+                 <div class="manga-info">
+                      <h3>Человек-бензопила</h3>
+                      <h5>3-сезона</h5>
+                      <h5>66-серий</h5>
+                      <h5>2-фильма</h5>
+                      <span class="rating">★ 4.9</span>       
+                </div>
+            </div>
+            </a>
+
+        <a href="anime-detailss1.html/anime-details.html" style="text-decoration: none; color: inherit;">
+            <div class="manga-card">
+                <img src="https://avatars.mds.yandex.net/i?id=e001c1c5199a772823638f48513ac0030943a373-4274925-images-thumbs&n=13" alt="бензопила">
+                 <div class="manga-info">
+                      <h3>Человек-бензопила</h3>
+                      <h5>3-сезона</h5>
+                      <h5>66-серий</h5>
+                      <h5>2-фильма</h5>
+                      <span class="rating">★ 4.9</span>       
+                </div>
+            </div>
+            </a>
+
+        <a href="anime-detailss1.html/anime-details.html" style="text-decoration: none; color: inherit;">
+            <div class="manga-card">
+                <img src="https://avatars.mds.yandex.net/i?id=e001c1c5199a772823638f48513ac0030943a373-4274925-images-thumbs&n=13" alt="бензопила">
+                 <div class="manga-info">
+                      <h3>Человек-бензопила</h3>
+                      <h5>3-сезона</h5>
+                      <h5>66-серий</h5>
+                      <h5>2-фильма</h5>
+                      <span class="rating">★ 4.9</span>       
+                </div>
+            </div>
+            </a>
+
+        <a href="anime-detailss1.html/anime-details.html" style="text-decoration: none; color: inherit;">
+            <div class="manga-card">
+                 <img src="https://avatars.mds.yandex.net/i?id=e001c1c5199a772823638f48513ac0030943a373-4274925-images-thumbs&n=13" alt="бензопила">
+                   <div class="manga-info">
+                        <h3>Человек-бензопила</h3>
+                        <h5>3-сезона</h5>
+                        <h5>66-серий</h5>
+                        <h5>2-фильма</h5>
+                        <span class="rating">★ 4.9</span>       
+                </div>
+            </div>
+            </a>
+
+        <!--ЭТО ТРИТЫЙ КАТОЛГО 3-->
+
+                                                
+
+        <!-- Добавьте больше карточек по аналогии -->
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-links">
-            <a href="#">О нас</a>
-            <a href="#">Правила</a>
-            <a href="#">Контакты</a>
-            <a href="#">Помощь</a>
-            <a href="#">Реклама</a>
-        </div>
-        <p class="copyright">© 2023 AniHub. Все права защищены.</p>
-    </footer>
+    <div id="pagination" style="text-align: center; margin-top: 2rem;"></div>
+
+    <script>
+
+        
+        const cardsPerPage = 12; // Количество карточек на одной странице
+        const cards = document.querySelectorAll('#cards-container .manga-card');
+        const pagination = document.getElementById('pagination');
+    
+        let currentPage = 1;
+        const totalPages = Math.ceil(cards.length / cardsPerPage);
+    
+        function showPage(page) {
+            const start = (page - 1) * cardsPerPage;
+            const end = start + cardsPerPage;
+    
+            cards.forEach((card, index) => {
+                card.parentElement.style.display = (index >= start && index < end) ? 'block' : 'none';
+            });
+    
+            updatePagination(page);
+        }
+    
+        function updatePagination(page) {
+            pagination.innerHTML = '';
+    
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i;
+                btn.style.margin = '0 5px';
+                btn.style.padding = '5px 10px';
+                btn.style.background = (i === page) ? '#ff4757' : '#333';
+                btn.style.color = '#fff';
+                btn.style.border = 'none';
+                btn.style.borderRadius = '5px';
+                btn.style.cursor = 'pointer';
+    
+                btn.addEventListener('click', () => showPage(i));
+                pagination.appendChild(btn);
+            }
+        }
+    
+        showPage(currentPage);
+
+        
+    </script>
 </body>
 </html>
